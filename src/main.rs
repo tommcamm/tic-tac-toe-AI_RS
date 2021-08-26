@@ -73,7 +73,7 @@ fn computer_move(mut board: [[u8; 3]; 3]) -> [[u8; 3]; 3] {
 
 
 fn minimax(mut board: [[u8; 3]; 3], depth: i32, is_max: bool) -> i32{
-    let mut score = evaluate_score(board);
+    let score = evaluate_score(board);
 
     // If Minimizer (human) or Maximizer (computer) won the game return his score.
     if score == 10 || score == -10 {
@@ -197,7 +197,7 @@ fn player_move(board: [[u8; 3]; 3]) -> [[u8; 3]; 3]{
         println!();
         print!("Row[0-2] >> ");
         let _ = io::stdout().flush();
-        io::stdin()
+        let _ =io::stdin()
             .read_line(&mut x_input);
 
         let x_input: usize = match x_input.trim().parse() {
@@ -209,7 +209,7 @@ fn player_move(board: [[u8; 3]; 3]) -> [[u8; 3]; 3]{
         println!();
         print!("Column[0-2] >> ");
         let _ = io::stdout().flush();
-        io::stdin()
+        let _ = io::stdin()
             .read_line(&mut y_input);
         let y_input: usize = match y_input.trim().parse() {
             Ok(num) => num,
