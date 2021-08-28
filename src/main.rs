@@ -13,30 +13,46 @@ enum WinStatus {
 
 fn main() {
     println!("Welcome to tic-tac-toe game against AI!");
-    // Initialize a new board
-    let mut board = [[0u8; 3]; 3];
+    loop{
+        // Initialize a new board
+        let mut board = [[0u8; 3]; 3];
 
+        // Game loop
+        loop {
+            print_board(board);
+            board = player_move(board);
+            board = computer_move(board);
+            match check_win(board) {
+                WinStatus::Human  => {
+                    print_board(board);
+                    println!("[WIN] Congratulations! you beat minimax!");
+                    break;
+                },
+                WinStatus::Computer => {
+                    print_board(board);
+                    println!("[LOSE] minimax won...");
+                    break;
+                },
+                WinStatus::Draw => {
+                    print_board(board);
+                    println!("Draw!");
+                    break;
+                },
+                _ => {},
+            }
 
-    loop {
-        print_board(board);
-        board = player_move(board);
-        board = computer_move(board);
-        match check_win(board) {
-            WinStatus::Human  => {
-                println!("[WIN] Congratulations! you beat minimax!");
-                break;
-            },
-            WinStatus::Computer => {
-                println!("[LOSE] minimax won...");
-                break;
-            },
-            WinStatus::Draw => {
-                println!("Draw!");
-                break;
-            },
-            _ => {},
         }
+        let mut sel = String::new();
 
+        println!("Do you want to play again[y/N]? ");
+        let _ = io::stdout().flush();
+        let _ =io::stdin()
+            .read_line(&mut sel);
+
+        if sel != "y" {
+            println!("Exiting...");
+            break;
+        }
     }
 }
 
@@ -73,6 +89,7 @@ fn computer_move(mut board: [[u8; 3]; 3]) -> [[u8; 3]; 3] {
 
 
 fn minimax(mut board: [[u8; 3]; 3], depth: i32, is_max: bool) -> i32{
+
     let score = evaluate_score(board);
 
     // If Minimizer (human) or Maximizer (computer) won the game return his score.
@@ -216,7 +233,10 @@ fn player_move(board: [[u8; 3]; 3]) -> [[u8; 3]; 3]{
             Err(_) => continue,
         };
 
-        if board[x_input][y_input] == 0 {
+        if  x_input > 2 || y_input > 2 {
+            println!("Position non inside the board! try again")
+        }
+        else if board[x_input][y_input] == 0 {
             updated_board[x_input][y_input] = 1;
             break;
         } else {
